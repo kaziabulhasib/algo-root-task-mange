@@ -38,56 +38,75 @@ const Todo = () => {
     }
   };
 
+  // Delete a task from the backend
+  const deleteTask = async (taskId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tasks/${taskId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        setTasks(tasks.filter((task) => task._id !== taskId)); // Remove the task from the state
+      } else {
+        console.error("Error deleting task:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
+  };
+
   // Use useEffect to fetch tasks when the component loads
   useEffect(() => {
     fetchTasks();
   }, []);
 
   return (
-    <div className="p-4 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-4">Task Manager</h1>
+    <div className='p-4 max-w-md mx-auto'>
+      <h1 className='text-2xl font-bold text-center mb-4'>Task Manager</h1>
 
       {/* Add Task Form */}
-      <div className="mb-4">
+      <div className='mb-4'>
         <input
-          type="text"
-          placeholder="Task Title"
+          type='text'
+          placeholder='Task Title'
           value={newTask.title}
           onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-          className="border p-2 w-full mb-2"
+          className='border p-2 w-full mb-2'
         />
         <textarea
-          placeholder="Task Description"
+          placeholder='Task Description'
           value={newTask.description}
           onChange={(e) =>
             setNewTask({ ...newTask, description: e.target.value })
           }
-          className="border p-2 w-full mb-2"
-        ></textarea>
+          className='border p-2 w-full mb-2'></textarea>
         <button
           onClick={addTask}
-          className="bg-blue-500 text-white px-4 py-2 w-full"
-        >
+          className='bg-blue-500 text-white px-4 py-2 w-full hover:bg-blue-600 cursor-pointer'>
           Add Task
         </button>
       </div>
 
       {/* Task List */}
-      <ul className="space-y-4">
+      <ul className='space-y-4'>
         {tasks.map((task) => (
           <li
             key={task._id}
-            className="border p-4 flex justify-between items-center"
-          >
+            className='border p-4 flex justify-between items-center'>
             <div>
-              <h2 className="font-bold">{task.title}</h2>
+              <h2 className='font-bold'>{task.title}</h2>
               <p>{task.description}</p>
             </div>
-            <div className="space-x-2">
-              <button className="bg-green-500 text-white px-2 py-1">
+            <div className='space-x-2'>
+              <button className='bg-green-500 text-white px-2 py-1'>
                 Edit
               </button>
-              <button className="bg-red-500 text-white px-2 py-1">
+              <button
+                onClick={() => deleteTask(task._id)}
+                className='bg-red-500 text-white px-2 py-1 hover:bg-red-600 cursor-pointer'>
                 Delete
               </button>
             </div>
