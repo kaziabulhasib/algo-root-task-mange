@@ -4,8 +4,8 @@ frontend/node_modules/
 node_modules/
 
 # Ignore environment variables
-backend/.env
-frontend/.env
+.env
+
 
 # Ignore build files
 frontend/build/
@@ -13,3 +13,4 @@ backend/dist/
 
 # Ignore logs
 *.log
+!backend/.env
