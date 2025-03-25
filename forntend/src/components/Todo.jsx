@@ -133,19 +133,20 @@ const Todo = () => {
 
   return (
     <div className='p-6 max-w-lg mx-auto'>
+      {/* Main container with matching gradient */}
       <div className='bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg shadow-lg p-6'>
-        <h1 className='text-3xl font-extrabold text-slate-300 text-center mb-6'>
+        <h1 className='text-3xl font-extrabold text-white text-center mb-6'>
           Task Manager
         </h1>
 
-        {/* Add/Edit Task Form */}
-        <div className='bg-white rounded-lg p-4 shadow mb-6'>
+        {/* Add/Edit Task Form with Slate-to-Gray Gradient */}
+        <div className='bg-gradient-to-r from-slate-500 to-gray-600 rounded-lg p-4 shadow mb-6'>
           <input
             type='text'
             placeholder='Task Title'
             value={newTask.title}
             onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-            className='w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400'
+            className='w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-transparent text-white placeholder-white'
           />
           <textarea
             placeholder='Task Description'
@@ -153,7 +154,7 @@ const Todo = () => {
             onChange={(e) =>
               setNewTask({ ...newTask, description: e.target.value })
             }
-            className='w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400'></textarea>
+            className='w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-transparent text-white placeholder-white'></textarea>
           {isEditing ? (
             <button
               onClick={saveTask}
@@ -172,24 +173,22 @@ const Todo = () => {
         {/* Task List */}
         <ul className='space-y-4'>
           {tasks.length === 0 && (
-            <p className='text-center text-gray-700'>No tasks yet.</p>
+            <p className='text-center text-white'>No tasks yet.</p>
           )}
           {tasks.map((task) => (
             <li
               key={task._id}
-              className='bg-white p-4 rounded-lg shadow flex justify-between items-center transition transform hover:scale-105'>
+              className='bg-gradient-to-r from-slate-500 to-gray-600 p-4 rounded-lg shadow flex justify-between items-center transition transform hover:scale-105'>
               <div>
                 <h2
                   className={`font-bold text-lg ${
-                    task.completed ? "line-through text-gray-500" : ""
+                    task.completed ? "line-through text-gray-300" : "text-white"
                   }`}>
                   {task.title}
                 </h2>
                 <p
                   className={`text-sm ${
-                    task.completed
-                      ? "line-through text-gray-500"
-                      : "text-gray-700"
+                    task.completed ? "line-through text-gray-300" : "text-white"
                   }`}>
                   {task.description}
                 </p>
@@ -203,7 +202,7 @@ const Todo = () => {
                 />
                 <button
                   onClick={() => editTask(task)}
-                  className='bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition duration-200 cursor-pointer'>
+                  className='bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded transition duration-200 cursor-pointer'>
                   Edit
                 </button>
                 <button
