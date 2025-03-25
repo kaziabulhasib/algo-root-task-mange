@@ -5,6 +5,7 @@ node_modules/
 
 # Ignore environment variables
 .env
+backend/.env
 
 
 # Ignore build files
