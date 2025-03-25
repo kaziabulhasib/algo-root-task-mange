@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 const Todo = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ title: "", description: "" });
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTaskId, setEditTaskId] = useState(null);
 
   // Fetch tasks from the backend
   const fetchTasks = async () => {
@@ -58,6 +60,43 @@ const Todo = () => {
     }
   };
 
+  // Edit a task
+  const editTask = (task) => {
+    setIsEditing(true);
+    setEditTaskId(task._id);
+    setNewTask({ title: task.title, description: task.description });
+  };
+
+  // Save the edited task
+  const saveTask = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tasks/${editTaskId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newTask),
+        }
+      );
+
+      if (response.ok) {
+        const updatedTask = await response.json();
+        setTasks(
+          tasks.map((task) => (task._id === editTaskId ? updatedTask : task))
+        ); // Update the task in the state
+        setIsEditing(false);
+        setEditTaskId(null);
+        setNewTask({ title: "", description: "" }); // Reset the form
+      } else {
+        console.error("Error updating task:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
   // Use useEffect to fetch tasks when the component loads
   useEffect(() => {
     fetchTasks();
@@ -67,7 +106,7 @@ const Todo = () => {
     <div className='p-4 max-w-md mx-auto'>
       <h1 className='text-2xl font-bold text-center mb-4'>Task Manager</h1>
 
-      {/* Add Task Form */}
+      {/* Add/Edit Task Form */}
       <div className='mb-4'>
         <input
           type='text'
@@ -83,11 +122,19 @@ const Todo = () => {
             setNewTask({ ...newTask, description: e.target.value })
           }
           className='border p-2 w-full mb-2'></textarea>
-        <button
-          onClick={addTask}
-          className='bg-blue-500 text-white px-4 py-2 w-full hover:bg-blue-600 cursor-pointer'>
-          Add Task
-        </button>
+        {isEditing ? (
+          <button
+            onClick={saveTask}
+            className='bg-green-500 text-white px-4 py-2 w-full hover:bg-green-600 cursor-pointer'>
+            Save Task
+          </button>
+        ) : (
+          <button
+            onClick={addTask}
+            className='bg-blue-500 text-white px-4 py-2 w-full hover:bg-blue-600 cursor-pointer'>
+            Add Task
+          </button>
+        )}
       </div>
 
       {/* Task List */}
@@ -101,7 +148,9 @@ const Todo = () => {
               <p>{task.description}</p>
             </div>
             <div className='space-x-2'>
-              <button className='bg-green-500 text-white px-2 py-1'>
+              <button
+                onClick={() => editTask(task)}
+                className='bg-green-500 text-white px-2 py-1 hover:bg-green-600 cursor-pointer'>
                 Edit
               </button>
               <button
