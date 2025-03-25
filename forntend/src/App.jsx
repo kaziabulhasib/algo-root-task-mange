@@ -2,9 +2,8 @@ import Todo from "./components/Todo";
 
 function App() {
   return (
-    <div>
-      <h1 className='text-2xl text-center'>welcome </h1>
-      <Todo/>
+    <div className='min-h-screen bg-gradient-to-r from-teal-500 to-blue-500 flex justify-center items-center'>
+      <Todo />
     </div>
   );
 }
