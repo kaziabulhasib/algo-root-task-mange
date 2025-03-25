@@ -40,8 +40,15 @@ const Todo = () => {
     }
   };
 
-  // Delete a task from the backend
+  // Delete a task from the backend with confirmation
   const deleteTask = async (taskId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
+    if (!confirmDelete) {
+      return; // If the user cancels, do nothing
+    }
+
     try {
       const response = await fetch(
         `http://localhost:5000/api/tasks/${taskId}`,
