@@ -97,6 +97,33 @@ const Todo = () => {
     }
   };
 
+  // Toggle the completed status of a task
+  const toggleCompleted = async (taskId, currentStatus) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/tasks/${taskId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ completed: !currentStatus }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedTask = await response.json();
+        setTasks(
+          tasks.map((task) => (task._id === taskId ? updatedTask : task))
+        ); // Update the task in the state
+      } else {
+        console.error("Error toggling completed status:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error toggling completed status:", error);
+    }
+  };
+
   // Use useEffect to fetch tasks when the component loads
   useEffect(() => {
     fetchTasks();
@@ -147,7 +174,13 @@ const Todo = () => {
               <h2 className='font-bold'>{task.title}</h2>
               <p>{task.description}</p>
             </div>
-            <div className='space-x-2'>
+            <div className='space-x-2 flex items-center'>
+              <input
+                type='checkbox'
+                checked={task.completed}
+                onChange={() => toggleCompleted(task._id, task.completed)}
+                className='mr-2'
+              />
               <button
                 onClick={() => editTask(task)}
                 className='bg-green-500 text-white px-2 py-1 hover:bg-green-600 cursor-pointer'>
