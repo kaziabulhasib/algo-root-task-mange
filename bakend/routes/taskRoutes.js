@@ -19,8 +19,10 @@ router.post("/tasks", async (req, res) => {
     const { title, description } = req.body;
     const newTask = new Task({ title, description });
     await newTask.save();
+    console.log("New task added:", newTask);
     res.status(201).json(newTask);
   } catch (error) {
+    console.error("Error creating task:", error);
     res.status(400).json({ message: "Error creating task", error });
   }
 });
@@ -34,8 +36,10 @@ router.put("/tasks/:id", async (req, res) => {
       { title, description, completed },
       { new: true }
     );
+    console.log("Task updated:", updatedTask);
     res.status(200).json(updatedTask);
   } catch (error) {
+    console.error("Error updating task:", error);
     res.status(400).json({ message: "Error updating task", error });
   }
 });
@@ -43,9 +47,11 @@ router.put("/tasks/:id", async (req, res) => {
 // ✅ DELETE a task
 router.delete("/tasks/:id", async (req, res) => {
   try {
-    await Task.findByIdAndDelete(req.params.id);
+    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+    console.log("Task deleted:", deletedTask);
     res.status(200).json({ message: "Task deleted successfully" });
   } catch (error) {
+    console.error("Error deleting task:", error);
     res.status(500).json({ message: "Error deleting task", error });
   }
 });
