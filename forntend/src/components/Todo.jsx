@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 const Todo = () => {
   const [tasks, setTasks] = useState([]);
@@ -42,29 +43,39 @@ const Todo = () => {
 
   // Delete a task from the backend with confirmation
   const deleteTask = async (taskId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
-    if (!confirmDelete) {
-      return; // If the user cancels, do nothing
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/tasks/${taskId}`,
+            {
+              method: "DELETE",
+            }
+          );
 
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/tasks/${taskId}`,
-        {
-          method: "DELETE",
+          if (response.ok) {
+            setTasks(tasks.filter((task) => task._id !== taskId)); // Remove the task from the state
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your task has been deleted.",
+              icon: "success",
+            });
+          } else {
+            console.error("Error deleting task:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error deleting task:", error);
         }
-      );
-
-      if (response.ok) {
-        setTasks(tasks.filter((task) => task._id !== taskId)); // Remove the task from the state
-      } else {
-        console.error("Error deleting task:", response.statusText);
       }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
+    });
   };
 
   // Edit a task
