@@ -10,7 +10,9 @@ const Todo = () => {
   // Fetch tasks from the backend
   const fetchTasks = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/tasks");
+      const response = await fetch(
+        "https://algo-root-task-mange.onrender.com/api/tasks"
+      );
       const data = await response.json();
       setTasks(data);
     } catch (error) {
@@ -21,11 +23,14 @@ const Todo = () => {
   // Add a new task to the backend
   const addTask = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTask),
-      });
+      const response = await fetch(
+        "https://algo-root-task-mange.onrender.com/api/tasks",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newTask),
+        }
+      );
 
       if (response.ok) {
         const addedTask = await response.json();
@@ -53,7 +58,7 @@ const Todo = () => {
       if (result.isConfirmed) {
         try {
           const response = await fetch(
-            `http://localhost:5000/api/tasks/${taskId}`,
+            `https://algo-root-task-mange.onrender.com/api/tasks/${taskId}`,
             { method: "DELETE" }
           );
           if (response.ok) {
@@ -80,7 +85,7 @@ const Todo = () => {
   const saveTask = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tasks/${editTaskId}`,
+        `https://algo-root-task-mange.onrender.com/api/tasks/${editTaskId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -107,7 +112,7 @@ const Todo = () => {
   const toggleCompleted = async (taskId, currentStatus) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/tasks/${taskId}`,
+        `https://algo-root-task-mange.onrender.com/api/tasks/${taskId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
