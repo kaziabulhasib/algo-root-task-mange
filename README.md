@@ -178,30 +178,7 @@ The frontend will be available at `http://localhost:5173`.
 
 ---
 
-## Testing the API
 
-### Using cURL
-
-```bash
-# Create task
-curl -X POST -H "Content-Type: application/json" -d '{"title":"Test Task"}' http://localhost:5000/api/tasks
-
-# Get all tasks
-curl http://localhost:5000/api/tasks
-
-# Update task
-curl -X PUT -H "Content-Type: application/json" -d '{"status":"Completed"}' http://localhost:5000/api/tasks/65f1a2b3c6d12e7f4a8b9c0d
-
-# Delete task
-curl -X DELETE http://localhost:5000/api/tasks/65f1a2b3c6d12e7f4a8b9c0d
-```
-
-### Using Postman
-
-1. Import the provided Postman collection (if available)
-2. Set environment variables:
-   - `base_url`: http://localhost:5000/api
-3. Test endpoints with sample requests
 
 ---
 
